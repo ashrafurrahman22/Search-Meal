@@ -19,6 +19,7 @@ const searchFood = async () => {
         errormsg.classList.add('d-none');
     const url= `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
 
+
     const res = await fetch(url);
     const data = await res.json();
     displaySearchResult(data.meals)}
@@ -29,17 +30,19 @@ const searchFood = async () => {
 }
 
 const displaySearchResult = meals => {
-    // console.log(meals);
+    // console.log(meals.length);
 
     // meal errors div and msg
     const mealErroDiv = document.getElementById('mealError-div');
     const mealErrorMsg = document.getElementById('mealError-msg');
     // error condition 
-    if(meals.length == 0 ) {
+    if(meals == null ) {
+        // console.log('ok');
         mealErrorMsg.classList.remove('d-none');
         mealErroDiv.appendChild(mealErrorMsg);
     }
-    const searchResult = document.getElementById('search-result');
+    else {
+        const searchResult = document.getElementById('search-result');
 
     // clean the display for new search
     searchResult.textContent ='';
@@ -59,6 +62,8 @@ const displaySearchResult = meals => {
         `;
         searchResult.appendChild(div);
     }) 
+    }
+    
         
 }
 

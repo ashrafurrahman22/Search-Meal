@@ -7,9 +7,15 @@ const searchFood = () => {
 
     const url= `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
 
+
+    /*
+    wrong version 91, it will show you in console => catch error    
+    const url= `https://www.themealdb.com/api/json/v91/1/search.php?s=${searchText}`; */
+
     fetch(url)
     .then(res => res.json())
     .then(data => displaySearchResult(data.meals))
+    .catch(error => console.log(error));
 }
 
 const displaySearchResult = meals => {
