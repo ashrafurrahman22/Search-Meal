@@ -1,25 +1,51 @@
-const searchFood = () => {
+// async and await
+const searchFood = async () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
 
     // clear input value
     searchField.value ='';
 
+    // make an error msg 
+    const errorDiv = document.getElementById('error-div');
+    const errormsg = document.getElementById('error-msg');
+    if(searchText == 0 ){
+        
+        errormsg.classList.remove('d-none');
+        errorDiv.appendChild(errormsg);
+ 
+    }
+    else {
+        errormsg.classList.add('d-none');
     const url= `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
 
-    fetch(url)
-    .then(res => res.json())
-    .then(data => displaySearchResult(data.meals))
+    const res = await fetch(url);
+    const data = await res.json();
+    displaySearchResult(data.meals)}
+
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(data => displaySearchResult(data.meals))
 }
 
 const displaySearchResult = meals => {
+    // console.log(meals);
+
+    // meal errors div and msg
+    const mealErroDiv = document.getElementById('mealError-div');
+    const mealErrorMsg = document.getElementById('mealError-msg');
+    // error condition 
+    if(meals.length == 0 ) {
+        mealErrorMsg.classList.remove('d-none');
+        mealErroDiv.appendChild(mealErrorMsg);
+    }
     const searchResult = document.getElementById('search-result');
 
     // clean the display for new search
     searchResult.textContent ='';
 
+
     meals.forEach(meal => {
-        // console.log(meal);
         const div = document.createElement('div');
         div.classList.add('col');
         div.innerHTML =`
@@ -32,16 +58,24 @@ const displaySearchResult = meals => {
           </div>
         `;
         searchResult.appendChild(div);
-    })
+    }) 
+        
 }
 
+// using async and await
 
-const loadMealDetail = mealId => {
-    console.log(mealId);
+const loadMealDetail = async mealId => {
+    // console.log(mealId);
     const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
-    fetch(url)
-    .then(res => res.json())
-    .then(data => displayMealDetail(data.meals[0]))
+
+
+    const res = await fetch(url);
+    const data = await res.json()
+    displayMealDetail(data.meals[0])
+
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(data => displayMealDetail(data.meals[0]))
 }
 
 const displayMealDetail = meal => {
@@ -54,7 +88,7 @@ const displayMealDetail = meal => {
     const detailsDiv   =  document.createElement('div');
     detailsDiv.classList.add('card');
     detailsDiv.innerHTML = `
-    <div class="card" >
+    <div class="card text-center" >
           <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">${meal.strMeal}</h5>
